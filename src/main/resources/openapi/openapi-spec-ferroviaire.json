@@ -1,0 +1,188 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API Gestion Réseau Ferroviaire",
+    "description": "API générée pour correspondre aux modèles Java du projet de cartographie.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Serveur local Spring Boot"
+    }
+  ],
+  "paths": {
+    "/gares": {
+      "get": {
+        "summary": "Lister les gares",
+        "responses": {
+          "200": {
+            "description": "Liste des gares récupérée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Gare"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Créer une nouvelle gare",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Gare"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Gare créée"
+          }
+        }
+      }
+    },
+    "/train/consulter": {
+      "get": {
+        "summary": "Consulter un train par son matricule (Travail n°21)",
+        "parameters": [
+          {
+            "name": "matricule",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Détails du train",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Train"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Gare": {
+        "type": "object",
+        "properties": {
+          "id_gare": {
+            "type": "integer"
+          },
+          "nom_gare": {
+            "type": "string"
+          },
+          "ville": {
+            "type": "string"
+          },
+          "nb_quai": {
+            "type": "integer"
+          },
+          "reseau": {
+            "$ref": "#/components/schemas/Reseau"
+          }
+        }
+      },
+      "CheminDeFer": {
+        "type": "object",
+        "properties": {
+          "id_chemin": {
+            "type": "integer"
+          },
+          "distance": {
+            "type": "number",
+            "format": "float"
+          },
+          "voies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Voie"
+            }
+          },
+          "gareDepart": {
+            "$ref": "#/components/schemas/Gare"
+          },
+          "gareArrivee": {
+            "$ref": "#/components/schemas/Gare"
+          },
+          "cheminPrecedent": {
+            "$ref": "#/components/schemas/CheminDeFer"
+          },
+          "cheminSuivant": {
+            "$ref": "#/components/schemas/CheminDeFer"
+          },
+          "reseau": {
+            "$ref": "#/components/schemas/Reseau"
+          }
+        }
+      },
+      "Voie": {
+        "type": "object",
+        "properties": {
+          "id_voie": {
+            "type": "integer"
+          },
+          "sens": {
+            "type": "string"
+          },
+          "vitesse_max": {
+            "type": "integer"
+          }
+        }
+      },
+      "Reseau": {
+        "type": "object",
+        "properties": {
+          "id_reseau": {
+            "type": "integer"
+          },
+          "nom_reseau": {
+            "type": "string"
+          }
+        }
+      },
+      "Train": {
+        "required": [
+          "matricule"
+        ],
+        "type": "object",
+        "properties": {
+          "matricule": {
+            "type": "string"
+          },
+          "wagons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Wagon"
+            }
+          }
+        }
+      },
+      "Wagon": {
+        "type": "object",
+        "properties": {
+          "nombrePlaces": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}

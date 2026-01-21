@@ -3,6 +3,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-parent</artifactId>
+      <version>4.0.0</version>
+      <relativePath/>
+  </parent>
+
   <groupId>org.example</groupId>
   <artifactId>gestion-app</artifactId>
   <version>1.0-SNAPSHOT</version>
@@ -44,6 +51,25 @@
       <groupId>fr.cours.info.tp.ferroviaire</groupId>
       <artifactId>cartographie-lib</artifactId>
       <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web-services</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>io.swagger.core.v3</groupId>
+        <artifactId>swagger-annotations</artifactId>
+        <version>2.2.41</version>
+    </dependency>
+    <dependency>
+        <groupId>jakarta.validation</groupId>
+        <artifactId>jakarta.validation-api</artifactId>
+        <version>3.1.1</version>
     </dependency>
 
   </dependencies>
@@ -92,5 +118,34 @@
         </plugin>
       </plugins>
     </pluginManagement>
+      <plugins>
+          <plugin>
+              <groupId>org.openapitools</groupId>
+              <artifactId>openapi-generator-maven-plugin</artifactId>
+              <version>7.15.0</version>
+              <executions>
+                  <execution>
+                      <goals>
+                          <goal>generate</goal>
+                      </goals>
+                      <configuration>
+                          <inputSpec>
+                              ${project.basedir}/src/main/resources/openapi/openapi-spec-ferroviaire.json
+                          </inputSpec>
+                          <generatorName>spring</generatorName>
+                          <library>spring-boot</library>
+                          <configOptions>
+                              <openApiNullable>false</openApiNullable>
+                              <useSpringController>true</useSpringController>
+                              <interfaceOnly>true</interfaceOnly>
+                              <useJakartaEe>true</useJakartaEe>
+                              <springApiVersion>4.0.0</springApiVersion>
+                              <useSpringBoot3>true</useSpringBoot3>
+                          </configOptions>
+                      </configuration>
+                  </execution>
+              </executions>
+          </plugin>
+      </plugins>
   </build>
 </project>
