@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TrainRepository extends CrudRepository<TrainDAO, Long> {
+public interface TrainRepository extends CrudRepository<TrainDAO, Integer> {
 TrainDAO findByMatricule (String matricule);
 }
