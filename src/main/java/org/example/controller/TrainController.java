@@ -17,6 +17,6 @@ public class TrainController {
     @GetMapping(TrainApi.PATH_TRAIN_CONSULTER_GET) // Use the actual constant from generated code
     public Train consulterTrain(
             @RequestParam(value = "matricule", required = true) String matricule) {
-        return service.creer(matricule); // As per PDF instructions, call service.creer
+        return service.rechercher(matricule); // As per PDF instructions, call service.creer
     }
 }
