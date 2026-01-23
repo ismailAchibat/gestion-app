@@ -6,15 +6,15 @@ import jakarta.persistence.*;
 public class GareDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
     private String nom;
     private int nombreQuais;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -32,5 +32,13 @@ public class GareDAO {
 
     public void setNombreQuais(int nombreQuais) {
         this.nombreQuais = nombreQuais;
+    }
+
+    public GareDAO(String nom, int nombreQuais) {
+        this.nom = nom;
+        this.nombreQuais = nombreQuais;
+    }
+
+    public GareDAO() {
     }
 }
