@@ -20,3 +20,10 @@ insert into horaire(id, trajet_id, heure_depart, heure_arrivee, train_id) values
 insert into horaire(id, trajet_id, heure_depart, heure_arrivee, train_id) values (1, 0, '09:30:00', '10:30:00', 1);
 insert into horaire(id, trajet_id, heure_depart, heure_arrivee, train_id) values (2, 1, '17:00:00', '18:00:00', 0);
 insert into horaire(id, trajet_id, heure_depart, heure_arrivee, train_id) values (3, 2, '10:00:00', '11:00:00', 1);
+
+
+insert into chemin_de_fer(id, gare_depart_id, gare_arrivee_id, distance, nb_voies)
+values (10, 1, 2, 12.5, 1);
+
+insert into chemin_de_fer(id, gare_depart_id, gare_arrivee_id, distance, nb_voies)
+values (11, 1, 3, 42.0, 2);
