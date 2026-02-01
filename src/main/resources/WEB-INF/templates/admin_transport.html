@@ -1,0 +1,54 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin Transport</title>
+</head>
+<body>
+
+<h1>Créer un TER </h1>
+
+<form method="post" action="/admin/transport/train/ter">
+    <label>Matricule</label><br/>
+    <input name="matricule" placeholder="Ex: TER001" required/><br/><br/>
+
+    <label>Wagon 1 (places)</label><br/>
+    <input name="p1" type="number" value="20" required/><br/><br/>
+
+    <label>Wagon 2 (places)</label><br/>
+    <input name="p2" type="number" value="20" required/><br/><br/>
+
+    <label>Wagon 3 (places)</label><br/>
+    <input name="p3" type="number" value="30" required/><br/><br/>
+
+    <button type="submit">Créer le TER</button>
+</form>
+
+<hr/>
+
+<h2>Trains existants</h2>
+<table border="1" cellpadding="6">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Matricule</th>
+        <th>Type</th>
+        <th>Wagons (places)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="t : ${trains}">
+        <td th:text="${t.id}"></td>
+        <td th:text="${t.matricule}"></td>
+        <td th:text="${t.type}"></td>
+        <td>
+      <span th:each="w, st : ${t.wagons}">
+        <span th:text="${w.nombrePlaces}"></span><span th:if="${!st.last}">, </span>
+      </span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

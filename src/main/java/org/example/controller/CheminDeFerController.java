@@ -27,7 +27,7 @@ public class CheminDeFerController {
     }
 
     @GetMapping
-    public List<CheminDeFerDAO> listerParDepart(@RequestParam Long departId) {
+    public List<CheminDeFerDAO> listerParDepart(@RequestParam Integer departId) {
         return service.listerParDepart(departId);
     }
 }

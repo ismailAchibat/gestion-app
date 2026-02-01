@@ -3,51 +3,75 @@ package org.example.service;
 import org.example.bdd.models.GareDAO;
 import org.example.bdd.models.HoraireDAO;
 import org.example.bdd.models.TrajetDAO;
+import org.example.bdd.models.TrainDAO;
+import org.example.bdd.repositories.CheminDeFerRepository;
 import org.example.bdd.repositories.GareRepository;
 import org.example.bdd.repositories.HoraireRepository;
 import org.example.bdd.repositories.TrajetRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.bdd.repositories.TrainRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TrajetService {
 
+    private final CheminDeFerRepository cheminRepository;
     private final TrajetRepository trajetRepository;
     private final HoraireRepository horaireRepository;
     private final GareRepository gareRepository;
+    private final TrainRepository trainRepository;
 
-    @Autowired
-    public TrajetService(TrajetRepository trajetRepository, HoraireRepository horaireRepository, GareRepository gareRepository) {
+    public TrajetService(TrajetRepository trajetRepository,
+                         HoraireRepository horaireRepository,
+                         GareRepository gareRepository,
+                         CheminDeFerRepository cheminRepository,
+                         TrainRepository trainRepository) {
         this.trajetRepository = trajetRepository;
         this.horaireRepository = horaireRepository;
         this.gareRepository = gareRepository;
+        this.cheminRepository = cheminRepository;
+        this.trainRepository = trainRepository;
     }
 
+    // SCENARIO 3 : créer un trajet A -> C via B avec un train
+    public TrajetDAO creerTrajetVia(Integer trainId, Integer departId, Integer viaId, Integer arriveeId) {
+
+        GareDAO depart = gareRepository.findById(departId).orElseThrow();
+        GareDAO via = gareRepository.findById(viaId).orElseThrow();
+        GareDAO arrivee = gareRepository.findById(arriveeId).orElseThrow();
+        TrainDAO train = trainRepository.findById(trainId).orElseThrow();
+
+        if (cheminRepository.findFirstByGareDepart_IdAndGareArrivee_Id(departId, viaId) == null) {
+            throw new IllegalArgumentException("Aucun chemin entre départ et via (A->B).");
+        }
+        if (cheminRepository.findFirstByGareDepart_IdAndGareArrivee_Id(viaId, arriveeId) == null) {
+            throw new IllegalArgumentException("Aucun chemin entre via et arrivée (B->C).");
+        }
+
+        TrajetDAO trajet = new TrajetDAO();
+        trajet.setTrain(train);
+        trajet.setGareDepart(depart);
+        trajet.setGareVia(via);
+        trajet.setGareArrivee(arrivee);
+
+        return trajetRepository.save(trajet);
+    }
+
+    // SCENARIO 4/USAGER : chercher horaires par noms de gares (direct)
     public List<HoraireDAO> findSchedules(String nomGareDepart, String nomGareArrivee) {
-        // Find departure and arrival stations
-        GareDAO gareDepart = gareRepository.findFirstByNom(nomGareDepart);
-        GareDAO gareArrivee = gareRepository.findFirstByNom(nomGareArrivee);
 
-        if (gareDepart == null || gareArrivee == null) {
-            return Collections.emptyList(); // One or both stations not found
-        }
+        GareDAO depart = gareRepository.findFirstByNom(nomGareDepart);
+        GareDAO arrivee = gareRepository.findFirstByNom(nomGareArrivee);
 
-        // Find trajets between the two stations
-        List<TrajetDAO> trajets = trajetRepository.findByGareDepart_NomAndGareArrivee_Nom(nomGareDepart, nomGareArrivee);
+        if (depart == null || arrivee == null) return Collections.emptyList();
 
-        if (trajets.isEmpty()) {
-            return Collections.emptyList(); // No direct trajet found
-        }
-
-        // Assuming for simplicity that we only care about the first found trajet for schedules
-        // In a real application, you might want to aggregate schedules from all matching trajets
-        TrajetDAO primaryTrajet = trajets.get(0);
-
-        // Find all schedules for this trajet
+        // On retourne les horaires liés aux trajets dont les gares matchent
         return horaireRepository.findByTrajet_GareDepart_NomAndTrajet_GareArrivee_Nom(nomGareDepart, nomGareArrivee);
+    }
+
+    public Iterable<TrajetDAO> lister() {
+        return trajetRepository.findAll();
     }
 }

@@ -1,9 +1,9 @@
 package org.example.bdd.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "train")
 public class TrainDAO {
@@ -11,6 +11,7 @@ public class TrainDAO {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String matricule;
+    private String type; // "TER" ou "TGV"
 
     public Integer getId() {
         return id;
@@ -27,4 +28,13 @@ public class TrainDAO {
     public void setMatricule(String matricule) {
         this.matricule = matricule;
     }
+
+    @OneToMany(mappedBy = "train", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WagonDAO> wagons = new ArrayList<>();
+
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
+
+    public List<WagonDAO> getWagons() { return wagons; }
+    public void setWagons(List<WagonDAO> wagons) { this.wagons = wagons; }
 }

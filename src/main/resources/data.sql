@@ -15,6 +15,8 @@ insert into trajet(id, gare_depart_id, gare_arrivee_id) values (0, 0, 1); -- Le 
 insert into trajet(id, gare_depart_id, gare_arrivee_id) values (1, 1, 0); -- Paris Montparnasse to Le Mans
 insert into trajet(id, gare_depart_id, gare_arrivee_id) values (2, 1, 2); -- Paris Montparnasse to Lille Flandres
 
+
+
 -- Insert Horaires
 insert into horaire(id, trajet_id, heure_depart, heure_arrivee, train_id) values (0, 0, '08:00:00', '09:00:00', 0);
 insert into horaire(id, trajet_id, heure_depart, heure_arrivee, train_id) values (1, 0, '09:30:00', '10:30:00', 1);
@@ -27,3 +29,6 @@ values (10, 1, 2, 12.5, 1);
 
 insert into chemin_de_fer(id, gare_depart_id, gare_arrivee_id, distance, nb_voies)
 values (11, 1, 3, 42.0, 2);
+
+insert into chemin_de_fer(id, gare_depart_id, gare_arrivee_id, distance, nb_voies)
+values (12, 2, 3, 8.0, 1);

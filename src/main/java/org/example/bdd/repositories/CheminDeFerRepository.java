@@ -7,7 +7,15 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CheminDeFerRepository extends CrudRepository<CheminDeFerDAO, Long> {
-    List<CheminDeFerDAO> findByGareDepart_Id(Long gareDepartId);
-    List<CheminDeFerDAO> findByGareArrivee_Id(Long gareArriveeId);
+public interface CheminDeFerRepository
+        extends CrudRepository<CheminDeFerDAO, Integer> {
+
+    List<CheminDeFerDAO> findByGareDepart_Id(Integer gareDepartId);
+    CheminDeFerDAO findFirstByGareDepart_IdAndGareArrivee_Id(Integer departId, Integer arriveeId);
+
 }
+
+
+
+
+
