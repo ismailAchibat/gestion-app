@@ -47,4 +47,5 @@ public class TrajetDAO {
     public void setGareArrivee(GareDAO gareArrivee) {
         this.gareArrivee = gareArrivee;
     }
+
 }
