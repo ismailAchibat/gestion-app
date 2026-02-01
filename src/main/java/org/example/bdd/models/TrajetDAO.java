@@ -23,7 +23,9 @@ public class TrajetDAO {
 
     @ManyToOne
     @JoinColumn(name = "train_id")
+
     private TrainDAO train;
+
     public  TrajetDAO(){}
     public TrajetDAO(GareDAO gareDepart, GareDAO gareArrivee) {
         this.gareDepart = gareDepart;
