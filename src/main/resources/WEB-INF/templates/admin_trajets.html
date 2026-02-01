@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin - Trajets</title>
+</head>
+<body>
+<h1>Créer Trajet</h1>
+
+<p th:if="${msg}" th:text="${msg}" style="color:green;"></p>
+<p th:if="${err}" th:text="${err}" style="color:red;"></p>
+
+<h2>Créer un trajet (via)</h2>
+<form method="post" th:action="@{/admin/trajets/creer-via}">
+    <label>Train</label><br/>
+    <select name="trainId" required>
+        <option value="">-- choisir --</option>
+        <option th:each="t : ${trains}" th:value="${t.id}" th:text="${t.matricule} + ' (' + ${t.type} + ')'"></option>
+    </select><br/><br/>
+
+    <label>Gare départ (A)</label><br/>
+    <select name="departId" required>
+        <option value="">-- choisir --</option>
+        <option th:each="g : ${gares}" th:value="${g.id}" th:text="${g.nom}"></option>
+    </select><br/><br/>
+
+    <label>Gare via (B)</label><br/>
+    <select name="viaId" required>
+        <option value="">-- choisir --</option>
+        <option th:each="g : ${gares}" th:value="${g.id}" th:text="${g.nom}"></option>
+    </select><br/><br/>
+
+    <label>Gare arrivée (C)</label><br/>
+    <select name="arriveeId" required>
+        <option value="">-- choisir --</option>
+        <option th:each="g : ${gares}" th:value="${g.id}" th:text="${g.nom}"></option>
+    </select><br/><br/>
+
+    <button type="submit">Créer le trajet</button>
+</form>
+
+<hr/>
+
+<h2>Trajets existants</h2>
+<table border="1" cellpadding="6">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Train</th>
+        <th>Départ</th>
+        <th>Via</th>
+        <th>Arrivée</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="t : ${trajets}">
+        <td th:text="${t.id}"></td>
+        <td th:text="${t.train != null ? t.train.matricule : '-'}">-</td>
+        <td th:text="${t.gareDepart.nom}"></td>
+        <td th:text="${t.gareVia != null ? t.gareVia.nom : '-'}">-</td>
+        <td th:text="${t.gareArrivee.nom}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

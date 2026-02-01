@@ -34,7 +34,7 @@ public class CheminDeFerService {
         return cheminRepo.save(c);
     }
 
-    public List<CheminDeFerDAO> listerParDepart(Long gareId) {
+    public List<CheminDeFerDAO> listerParDepart(Integer gareId) {
         return cheminRepo.findByGareDepart_Id(gareId);
     }
 }

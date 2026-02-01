@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface HoraireRepository extends CrudRepository<HoraireDAO, Integer> {
-    List<HoraireDAO> findByTrajet_GareDepart_NomAndTrajet_GareArrivee_Nom(String nomGareDepart, String nomGareArrivee);
+    List<HoraireDAO> findByTrajet_GareDepart_NomAndTrajet_GareArrivee_Nom(String nomDepart, String nomArrivee);
 }
