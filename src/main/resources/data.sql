@@ -32,3 +32,26 @@ values (11, 1, 3, 42.0, 2);
 
 insert into chemin_de_fer(id, gare_depart_id, gare_arrivee_id, distance, nb_voies)
 values (12, 2, 3, 8.0, 1);
+
+-- Chemins nécessaires scénario 4 (C->B et B->A)
+insert into chemin_de_fer(id, gare_depart_id, gare_arrivee_id, distance, nb_voies)
+values (13, 3, 1, 42.0, 2); -- Marseille (C) -> Paris (B)
+
+insert into chemin_de_fer(id, gare_depart_id, gare_arrivee_id, distance, nb_voies)
+values (14, 1, 0, 200.0, 2); -- Paris (B) -> Le Mans (A)
+
+-- Trajets scénario 4
+-- t3 : C->B (Marseille -> Paris)
+insert into trajet(id, gare_depart_id, gare_arrivee_id, gare_via_id, train_id)
+values (3, 3, 1, null, 0);
+
+-- t4 : C->A via B (Marseille -> Le Mans via Paris)
+insert into trajet(id, gare_depart_id, gare_arrivee_id, gare_via_id, train_id)
+values (4, 3, 0, 1, 0);
+
+-- Horaires scénario 4 (même heure départ, même train)
+insert into horaire(id, trajet_id, heure_depart, heure_arrivee, train_id)
+values (4, 3, '07:00:00', '10:00:00', 0);
+
+insert into horaire(id, trajet_id, heure_depart, heure_arrivee, train_id)
+values (5, 4, '07:00:00', '12:00:00', 0);
