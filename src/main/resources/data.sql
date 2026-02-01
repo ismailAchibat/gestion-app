@@ -9,3 +9,14 @@ insert into train(id, matricule) values (1, '5678');
 insert into train(id, matricule) values (2, 'ABCD');
 insert into train(id, matricule) values (3, 'EFGH');
 insert into train(id, matricule) values (4, 'IJKL');
+
+-- Insert Trajets
+insert into trajet(id, gare_depart_id, gare_arrivee_id) values (0, 0, 1); -- Le Mans to Paris Montparnasse
+insert into trajet(id, gare_depart_id, gare_arrivee_id) values (1, 1, 0); -- Paris Montparnasse to Le Mans
+insert into trajet(id, gare_depart_id, gare_arrivee_id) values (2, 1, 2); -- Paris Montparnasse to Lille Flandres
+
+-- Insert Horaires
+insert into horaire(id, trajet_id, heure_depart, heure_arrivee, train_id) values (0, 0, '08:00:00', '09:00:00', 0);
+insert into horaire(id, trajet_id, heure_depart, heure_arrivee, train_id) values (1, 0, '09:30:00', '10:30:00', 1);
+insert into horaire(id, trajet_id, heure_depart, heure_arrivee, train_id) values (2, 1, '17:00:00', '18:00:00', 0);
+insert into horaire(id, trajet_id, heure_depart, heure_arrivee, train_id) values (3, 2, '10:00:00', '11:00:00', 1);

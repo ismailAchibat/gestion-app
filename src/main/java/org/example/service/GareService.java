@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class GareService {
 
@@ -35,6 +37,12 @@ public class GareService {
         gare.setNomGare(gareDAO.getNom());
         gare.setNbQuai(gareDAO.getNombreQuais());
         return gare;
+    }
+
+    public List<GareDAO> listerGares() {
+        List<GareDAO> gares = new ArrayList<>();
+        repository.findAll().forEach(gares::add);
+        return gares;
     }
 
 
