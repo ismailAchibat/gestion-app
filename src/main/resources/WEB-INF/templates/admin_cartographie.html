@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin - Cartographie</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 24px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card { border: 1px solid #ddd; border-radius: 10px; padding: 16px; }
+        label { display:block; margin-top:10px; font-weight: 600; }
+        input, select { width: 100%; padding: 8px; margin-top: 6px; }
+        button { margin-top: 14px; padding: 10px 14px; cursor:pointer; }
+        table { width:100%; border-collapse: collapse; margin-top: 12px; }
+        th, td { border: 1px solid #eee; padding: 8px; text-align: left; }
+        th { background: #f7f7f7; }
+        .msg { padding: 10px; border-radius: 8px; margin-bottom: 14px; }
+        .ok { background: #e7f7ee; border: 1px solid #bde5cc; }
+        .err { background: #fdeaea; border: 1px solid #f2b8b8; }
+        .small { color:#666; font-size: 13px; }
+    </style>
+</head>
+
+<body>
+<h1>Administration - Cartographie</h1>
+<p class="small">Scénario 1 : créer des gares et associer des chemins.</p>
+
+<!-- Messages -->
+<div th:if="${success}" class="msg ok" th:text="${success}"></div>
+<div th:if="${error}" class="msg err" th:text="${error}"></div>
+
+<div class="grid">
+
+    <!-- Carte: Créer une gare -->
+    <div class="card">
+        <h2>Créer une gare</h2>
+
+        <form th:action="@{/admin/cartographie/gares}" method="post">
+            <label>Nom</label>
+            <input type="text" name="nom" placeholder="Ex: Le Mans" required>
+
+            <label>Nombre de quais</label>
+            <input type="number" name="nombreQuais" min="1" value="1" required>
+
+            <button type="submit">Créer la gare</button>
+        </form>
+
+        <h3>Gares existantes</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Quais</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="g : ${gares}">
+                <td th:text="${g.id}">1</td>
+                <td th:text="${g.nom}">Le Mans</td>
+                <td th:text="${g.nombreQuais}">1</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Carte: Créer un chemin -->
+    <div class="card">
+        <h2>Créer un chemin</h2>
+
+        <form th:action="@{/admin/cartographie/chemins}" method="post">
+            <label>Gare de départ</label>
+            <select name="departId" required>
+                <option value="" disabled selected>-- choisir --</option>
+                <option th:each="g : ${gares}" th:value="${g.id}" th:text="${g.nom}"></option>
+            </select>
+
+            <label>Gare d'arrivée</label>
+            <select name="arriveeId" required>
+                <option value="" disabled selected>-- choisir --</option>
+                <option th:each="g : ${gares}" th:value="${g.id}" th:text="${g.nom}"></option>
+            </select>
+
+            <label>Distance (km)</label>
+            <input type="number" name="distance" step="0.1" min="0.1" placeholder="Ex: 12.5" required>
+
+            <label>Nombre de voies</label>
+            <input type="number" name="nbVoies" min="1" value="1" required>
+
+            <button type="submit">Créer le chemin</button>
+        </form>
+
+        <h3>Voir les chemins depuis une gare</h3>
+        <form th:action="@{/admin/cartographie}" method="get">
+            <label>Départ (filtre)</label>
+            <select name="departId">
+                <option value="">-- aucun filtre --</option>
+                <option th:each="g : ${gares}"
+                        th:value="${g.id}"
+                        th:text="${g.nom}"
+                        th:selected="${departId != null and departId == g.id}">
+                </option>
+            </select>
+            <button type="submit">Afficher</button>
+        </form>
+
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Départ</th>
+                <th>Arrivée</th>
+                <th>Distance</th>
+                <th>Voies</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="c : ${chemins}">
+                <td th:text="${c.id}">10</td>
+                <td th:text="${c.gareDepart.nom}">A</td>
+                <td th:text="${c.gareArrivee.nom}">B</td>
+                <td th:text="${c.distance}">12.5</td>
+                <td th:text="${c.nbVoies}">1</td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+</body>
+</html>
